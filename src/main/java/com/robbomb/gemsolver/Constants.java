@@ -26,4 +26,6 @@ public class Constants {
 
     public static final int GEM_X_OFFSET = 67;
     public static final int GEM_Y_OFFSET = 67;
+
+    public static final double COLOR_DELTA = 64;
 }

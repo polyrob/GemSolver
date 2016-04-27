@@ -87,15 +87,6 @@ public class Utils {
         return new Color(Math.round(sumr / num), Math.round(sumg / num), Math.round(sumb / num));
     }
 
-//    boolean similarTo(Color c){
-//        double distance = (c.getRed() - this.getRed())*(c.getRed() - this.getRed()) + (c.g - this.g)*(c.g - this.g) + (c.b - this.b)*(c.b - this.b)
-//        if(distance > X){
-//            return true;
-//        }else{
-//            return false;
-//        }
-//    }
-
     public static void saveImage(BufferedImage capture) {
         try {
             ImageIO.write(capture, "bmp", new File("caputre.bmp"));

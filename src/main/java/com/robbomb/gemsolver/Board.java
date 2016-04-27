@@ -1,7 +1,5 @@
 package com.robbomb.gemsolver;
 
-import java.awt.*;
-
 /**
  * Created by NewRob on 4/26/2016.
  */

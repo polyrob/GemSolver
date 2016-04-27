@@ -4,12 +4,14 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-import static com.robbomb.gemsolver.Constants.BOARD_BACKGROUND;
+import static com.robbomb.gemsolver.Constants.*;
 
 /**
  * Created by NewRob on 4/26/2016.
  */
 public class Gem extends JLabel {
+
+    Color[] gameColors = {GEM_GREEN, GEM_BLUE, GEM_MAGENTA, GEM_ORANGE, GEM_RED, GEM_WHITE, GEM_YELLOW};
 
     public Gem() {
         super("Gem");
@@ -29,8 +31,27 @@ public class Gem extends JLabel {
         this.setBackground(c);
     }
 
-    private Color determineColor(Color avg) {
-        //TODO determine
-        return avg;
+    protected Color determineColor(Color avg) {
+        for (Color gameColor : gameColors) {
+            if (similarTo(avg, gameColor)) {
+                return gameColor;
+            }
+        }
+        System.out.println("Could not determine gameColor, " + avg.toString());
+        return Color.BLACK;
+    }
+
+
+    protected boolean similarTo(Color avg, Color gameColor) {
+        double dRed = Math.pow(avg.getRed() - gameColor.getRed(), 2);
+        double dBlue = Math.pow(avg.getBlue() - gameColor.getBlue(), 2);
+        double dGreen = Math.pow(avg.getGreen() - gameColor.getGreen(), 2);
+        double distance = dRed + dBlue + dGreen;
+
+        if (distance < Constants.COLOR_DELTA) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
