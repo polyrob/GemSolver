@@ -15,11 +15,11 @@ public class UtilsTest {
     public void getPixelsFromGridTest() {
         Point origin = new Point(0,0);
         Point result = Utils.getPixelsFromGrid(origin);
-        assertTrue(result.x == Constants.TOP_LEFT.x);
-        assertTrue(result.y == Constants.TOP_LEFT.y);
+        assertTrue(result.x == Constants.BITMAP_TOP_LEFT.x);
+        assertTrue(result.y == Constants.BITMAP_TOP_LEFT.y);
 
         Point rnd = new Point(2,5);
         result = Utils.getPixelsFromGrid(rnd);
-        assertTrue(result.x == Constants.TOP_LEFT.x + (2*Constants.GEM_X_OFFSET));
+        assertTrue(result.x == Constants.BITMAP_TOP_LEFT.x + (2*Constants.DEVICE_GEM_X_OFFSET));
     }
 }

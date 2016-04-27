@@ -9,6 +9,8 @@ public class GameColor {
 
     public static final Color BOARD_BACKGROUND = new Color(26, 12, 40);
 
+    public static final GameColor UNKNOWN =  new GameColor("UNKNOWN", Color.darkGray, 160, 90, 0);
+
     public static final GameColor COLOR_GREEN =  new GameColor("GREEN", Color.GREEN, 131, 84, 79);
     public static final GameColor COLOR_ORANGE =  new GameColor("ORANGE", Color.ORANGE, 28, 79, 95);
     public static final GameColor COLOR_RED = new GameColor("RED", Color.RED, 351, 92, 98);

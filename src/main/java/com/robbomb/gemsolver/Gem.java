@@ -16,11 +16,11 @@ public class Gem extends JLabel {
     public Gem() {
         super("Gem");
         this.setOpaque(true);
-        this.setBorder(new EmptyBorder(20, 20, 20, 20));
+        this.setBorder(new EmptyBorder(10, 10, 10, 10));
     }
 
 
-    public void determineColor(Color avg) throws Exception {
+    public void determineColor(Color avg) {
         float[] hsv = new float[3];
         Color.RGBtoHSB(avg.getRed(), avg.getGreen(), avg.getBlue(), hsv);
         if (hsv[1] < 0.2f) {
@@ -41,7 +41,9 @@ public class Gem extends JLabel {
                 }
             }
         }
-        throw new Exception("Could not determine gameColor, " + avg.toString());
+        System.out.println("Could not determine gameColor, " + avg.toString());
+        this.gameColor = UNKNOWN;
+        this.setBackground(avg);
     }
 
 

@@ -50,8 +50,8 @@ public class Utils {
 
     protected static Point getPixelsFromGrid(Point grid) {
         Point p = new Point();
-        p.x = TOP_LEFT.x + (grid.x * GEM_X_OFFSET);
-        p.y = TOP_LEFT.y + (grid.y * GEM_Y_OFFSET);
+        p.x = BITMAP_TOP_LEFT.x + (grid.x * DEVICE_GEM_X_OFFSET);
+        p.y = BITMAP_TOP_LEFT.y + (grid.y * DEVICE_GEM_Y_OFFSET);
         return p;
     }
 
@@ -98,22 +98,29 @@ public class Utils {
     public static Color averageColor(BufferedImage bi, int x, int y) {
         long sumr = 0, sumg = 0, sumb = 0;
         int num = 0;
-        for (int i = -SAMPLE_RANGE; i < 5; i += SAMPLE_RANGE) {
-            for (int j = -SAMPLE_RANGE; j < 5; j += SAMPLE_RANGE) {
-                Color pixel = new Color(bi.getRGB(x+i, y+j));
-                sumr += pixel.getRed();
-                sumg += pixel.getGreen();
-                sumb += pixel.getBlue();
-                num++;
+
+            for (int i = -SAMPLE_RANGE; i < 5; i += SAMPLE_RANGE) {
+                for (int j = -SAMPLE_RANGE; j < 5; j += SAMPLE_RANGE) {
+                    Color pixel = null;
+                    try {
+                        pixel = new Color(bi.getRGB(x + i, y + j));
+                    }catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    sumr += pixel.getRed();
+                    sumg += pixel.getGreen();
+                    sumb += pixel.getBlue();
+                    num++;
+                }
             }
-        }
+
         return new Color(Math.round(sumr / num), Math.round(sumg / num), Math.round(sumb / num));
     }
 
 
-    public static void saveImage(BufferedImage capture) {
+    public static void saveImage(BufferedImage capture, String filename) {
         try {
-            ImageIO.write(capture, "bmp", new File("caputre.bmp"));
+            ImageIO.write(capture, "bmp", new File(filename));
         } catch (IOException e) {
             e.printStackTrace();
         }

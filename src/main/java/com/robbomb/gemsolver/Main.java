@@ -32,11 +32,15 @@ public class Main {
 
         window.setVisible(true);
 
+
         while (true) {
+            long startTime = System.currentTimeMillis();
+
             // Get a frame
             BufferedImage capture = null;
             try {
                 capture = grabber.getFrame();
+//                Utils.saveImage(capture, "test.bmp");
             } catch (GrabberException e) {
                 e.printStackTrace();
             }
@@ -50,6 +54,8 @@ public class Main {
                         gem.determineColor(avg); //TODO: if can't determine a hue, break/wait
                     } catch (Exception e) {
                         e.printStackTrace();
+                        System.err.println("Position: " + (TOP_LEFT.x + (x * GEM_X_OFFSET)) + ", " + (TOP_LEFT.y + (y * GEM_Y_OFFSET)));
+
                     }
                 }
             }
@@ -57,8 +63,10 @@ public class Main {
             // Solve for best move
             Solver.solve(board);
 
+
             window.updateBoard();
 
+            System.out.println("Iteration solved in: " + (System.currentTimeMillis() - startTime) + "ms.");
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {

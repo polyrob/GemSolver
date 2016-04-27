@@ -40,4 +40,12 @@ public class Move {
     public void setRuns(int runs) {
         this.runs = runs;
     }
+
+    @Override
+    public String toString() {
+        return "Move{" +
+                "from=" + from +
+                ", to=" + to +
+                '}';
+    }
 }

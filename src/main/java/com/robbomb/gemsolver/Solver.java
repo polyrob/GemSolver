@@ -9,7 +9,7 @@ public class Solver {
 
     public static void solve(Board board) {
         //loop through each gem and find best move
-        Move bestMove = new Move(null, null, 0);    // dummy, this has to get overridden unless there is a problem solving
+        Move bestMove = null;    // dummy, this has to get overridden unless there is a problem solving
 
         for (int y = 0; y < board.getHeight(); y++) {
             for (int x = 0; x < board.getWidth(); x++) {
@@ -31,8 +31,8 @@ public class Solver {
         }
 
 
-        System.out.println(bestMove);
-        Utils.dragMove(bestMove.getFrom().x, bestMove.getFrom().y, bestMove.getTo().x, bestMove.getTo().y);
+        if (bestMove != null)
+            Utils.dragMove(bestMove.getFrom().x, bestMove.getFrom().y, bestMove.getTo().x, bestMove.getTo().y);
     }
 
     protected static Move swapAndCheck(Board board, Point p1, Point p2) {
@@ -125,6 +125,6 @@ public class Solver {
     }
 
     protected static void printSolution(Point p1, Point p2, int value) {
-        System.out.println("Found a run of " + value + ". Point (" + p1.x + ", " + p1.y + ") with (" + p2.x + ", " + p2.y + ")");
+//        System.out.println("Found a run of " + value + ". Point (" + p1.x + ", " + p1.y + ") with (" + p2.x + ", " + p2.y + ")");
     }
 }
