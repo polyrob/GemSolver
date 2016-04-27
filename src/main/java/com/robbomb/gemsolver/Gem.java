@@ -4,41 +4,31 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-import static com.robbomb.gemsolver.Constants.*;
+import static com.robbomb.gemsolver.GameColor.GAME_COLORS;
 
 /**
  * Created by NewRob on 4/26/2016.
  */
 public class Gem extends JLabel {
 
-    Color[] gameColors = {GEM_GREEN, GEM_BLUE, GEM_MAGENTA, GEM_ORANGE, GEM_RED, GEM_WHITE, GEM_YELLOW};
+    String gemName; // just for easy reference
 
     public Gem() {
         super("Gem");
         this.setOpaque(true);
-//        this.setBackground(BOARD_BACKGROUND);
         this.setBorder(new EmptyBorder(20, 20, 20, 20));
     }
 
 
-    @Override
-    public String toString() {
-        return getForeground().toString();
-    }
-
-    public void setColor(Color avg) {
-        Color c = determineColor(avg);
-        this.setBackground(c);
-    }
-
-    protected Color determineColor(Color avg) {
-        for (Color gameColor : gameColors) {
-            if (similarTo(avg, gameColor)) {
-                return gameColor;
+    public void determineColor(Color avg) {
+        for (GameColor gameColor : GAME_COLORS) {
+            if (similarTo(avg, gameColor.getColor())) {
+                gemName = gameColor.getName();
+                this.setBackground(gameColor.getColor());
+                return;
             }
         }
         System.out.println("Could not determine gameColor, " + avg.toString());
-        return Color.BLACK;
     }
 
 
@@ -54,4 +44,10 @@ public class Gem extends JLabel {
             return false;
         }
     }
+
+    @Override
+    public String toString() {
+        return gemName;
+    }
+
 }

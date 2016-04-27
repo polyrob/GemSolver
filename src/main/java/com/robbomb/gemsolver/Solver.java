@@ -6,7 +6,7 @@ package com.robbomb.gemsolver;
 public class Solver {
 
     public static void solve(Board board) {
-
+        //loop through each color, looking for best move
 
 
     }

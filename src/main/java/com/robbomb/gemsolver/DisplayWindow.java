@@ -4,7 +4,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-import static com.robbomb.gemsolver.Constants.BOARD_BACKGROUND;
+import static com.robbomb.gemsolver.GameColor.BOARD_BACKGROUND;
+
 
 /**
  * Created by NewRob on 4/26/2016.

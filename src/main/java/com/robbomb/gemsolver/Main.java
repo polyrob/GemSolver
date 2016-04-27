@@ -5,7 +5,6 @@ import com.robbomb.gemsolver.grabber.Grabber;
 import com.robbomb.gemsolver.grabber.GrabberException;
 import com.robbomb.gemsolver.grabber.ScreenGrabber;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -43,10 +42,8 @@ public class Main {
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 Color avg = Utils.averageColor(capture, TOP_LEFT.x + (x * GEM_X_OFFSET), TOP_LEFT.y + (y * GEM_Y_OFFSET), 5, 5);
-//                board.setGemAt(gem, x, y);
-//                board.setGemColorAt(x,y, avg);
                 Gem gem = board.getGemAt(x,y);
-                gem.setColor(avg);
+                gem.determineColor(avg); //TODO: if can't determine a color, break/wait
             }
         }
 
