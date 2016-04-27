@@ -13,7 +13,7 @@ public class Solver {
         for (int y = 0; y < board.getHeight(); y++) {
             for (int x = 0; x < board.getWidth(); x++) {
                 Gem gem = board.getGemAt(x, y);
-                Point p1 = new Point(x,y);
+                Point p1 = new Point(x, y);
 
                 // check left
                 if (x > 0) {
@@ -22,7 +22,7 @@ public class Solver {
 
                 // check right
                 if (x < board.getWidth() - 1) {
-                    Point p2 = new Point(x+1, y);
+                    Point p2 = new Point(x + 1, y);
                     swapAndCheck(board, p1, p2);
                 }
             }
@@ -41,23 +41,65 @@ public class Solver {
         gem2.setGameColor(temp);
 
         // Check horizontals  - check 0,1,2 - then 1,2,3 ... 5,6,7
+        int run = 1;
         GameColor current;
-        for (int y = 0; y < board.getHeight(); y++) {
-            for (int x = 0; x < board.getWidth(); x++) {
-                // check left
-                current = board.getGemAt(x, y).getGameColor();
-                int run = 1;
-                while (x+run < board.getHeight() && current == board.getGemAt(x+run, y).getGameColor()) {
-                    run++;
-                }
-                if (run > 2) {
-                    System.out.println("Found a run of " + run + ". Points " + x +", " + y + " to " + x+run + ", " +y);
-                }
-            }
+//        for (int y = 0; y < board.getHeight(); y++) {
+//            for (int x = 0; x < board.getWidth(); x++) {
+
+        current = board.getGemAt(p1.x, p1.y).getGameColor();
+
+        // check left from first
+        run = 1;
+        while (p1.x - run >= 0 && current == board.getGemAt(p1.x - run, p1.y).getGameColor()) {
+            run++;
         }
+        if (run > 2) printSolution(p1, p2, run);
+
+        // check right from second
+        run = 1;
+        while (p2.x + run < board.getHeight() && current == board.getGemAt(p2.x + run, p2.y).getGameColor()) {
+            run++;
+        }
+        if (run > 2) printSolution(p1, p2, run);
+
+        // check up from first
+        run = 1;
+        while (p1.y - run >= 0 && current == board.getGemAt(p1.x, p1.y - run).getGameColor()) {
+            run++;
+        }
+        if (run > 2) printSolution(p1, p2, run);
+
+        //check down from first
+        run = 1;
+        while (p1.y + run < board.getHeight() && current == board.getGemAt(p1.x, p1.y + run).getGameColor()) {
+            run++;
+        }
+        if (run > 2) printSolution(p1, p2, run);
+
+
+        // check up from second
+        run = 1;
+        while (p2.y - run >= 0 && current == board.getGemAt(p2.x, p2.y - run).getGameColor()) {
+            run++;
+        }
+        if (run > 2) printSolution(p1, p2, run);
+
+        //check down from second
+        run = 1;
+        while (p2.y + run < board.getHeight() && current == board.getGemAt(p2.x, p2.y + run).getGameColor()) {
+            run++;
+        }
+        if (run > 2) printSolution(p1, p2, run);
+
+//            }
+//        }
 
         // Revert
         gem2.setGameColor(gem1.getGameColor());
         gem1.setGameColor(temp);
+    }
+
+    protected static void printSolution(Point p1, Point p2, int value) {
+        System.out.println("Found a run of " + value + ". Point (" + p1.x + ", " + p1.y + ") with (" + p2.x + ", " + p2.y + ")");
     }
 }
