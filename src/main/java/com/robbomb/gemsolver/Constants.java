@@ -19,6 +19,10 @@ public class Constants {
 
     public static final double COLOR_DELTA = 0.055;
     public static final int SAMPLE_RANGE = 20;
+
+
+
+
 }
 
 

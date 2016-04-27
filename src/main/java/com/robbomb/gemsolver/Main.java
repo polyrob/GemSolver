@@ -30,34 +30,44 @@ public class Main {
             grabber = new ScreenGrabber();
         }
 
-        // Get a frame
-        BufferedImage capture = null;
-        try {
-            capture = grabber.getFrame();
-        } catch (GrabberException e) {
-            e.printStackTrace();
-        }
+        window.setVisible(true);
 
-        // Construct grid
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
-                Color avg = Utils.averageColor(capture, TOP_LEFT.x + (x * GEM_X_OFFSET), TOP_LEFT.y + (y * GEM_Y_OFFSET));
-                Gem gem = board.getGemAt(x,y);
-                try {
-                    gem.determineColor(avg); //TODO: if can't determine a hue, break/wait
-                } catch (Exception e) {
-                    e.printStackTrace();
+        while (true) {
+            // Get a frame
+            BufferedImage capture = null;
+            try {
+                capture = grabber.getFrame();
+            } catch (GrabberException e) {
+                e.printStackTrace();
+            }
+
+            // Construct grid
+            for (int y = 0; y < 8; y++) {
+                for (int x = 0; x < 8; x++) {
+                    Color avg = Utils.averageColor(capture, TOP_LEFT.x + (x * GEM_X_OFFSET), TOP_LEFT.y + (y * GEM_Y_OFFSET));
+                    Gem gem = board.getGemAt(x, y);
+                    try {
+                        gem.determineColor(avg); //TODO: if can't determine a hue, break/wait
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+
+            // Solve for best move
+            Solver.solve(board);
+
+            window.updateBoard();
+
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         }
 
-        // Solve for best move
-        Solver.solve(board);
 
-        window.updateBoard();
-
-
-        window.setVisible(true);
 
     }
 
