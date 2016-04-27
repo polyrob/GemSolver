@@ -11,12 +11,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.robbomb.gemsolver.Constants.*;
+
 /**
  * Created by NewRob on 4/26/2016.
  */
 public class Utils {
     private static final String[] WIN_RUNTIME = {"cmd.exe", "/C"};
     private static final String[] OS_LINUX_RUNTIME = {"/bin/bash", "-l", "-c"};
+
+    private static final String adbDragTemplate = "adb shell input swipe x1 y1 x2 y2";
 
     static String[] commands = {
             "adb shell screencap /sdcard/",
@@ -30,13 +34,34 @@ public class Utils {
 //    "adb shell input tap x y"
 //    "adb shell input swipe 10 500 600 500"
 
-    private static <T> T[] concat(T[] first, T[] second) {
+    public static void dragMove(int x1, int y1, int x2, int y2) {
+
+        Point p1 = getPixelsFromGrid(new Point(x1, y1));
+        Point p2 = getPixelsFromGrid(new Point(x2, y2));
+
+        String command = adbDragTemplate
+                .replace("x1", String.valueOf(p1.x))
+                .replace("y1", String.valueOf(p1.y))
+                .replace("x2", String.valueOf(p2.x))
+                .replace("y2", String.valueOf(p2.y));
+
+        runProcess(true, command);
+    }
+
+    protected static Point getPixelsFromGrid(Point grid) {
+        Point p = new Point();
+        p.x = TOP_LEFT.x + (grid.x * GEM_X_OFFSET);
+        p.y = TOP_LEFT.y + (grid.y * GEM_Y_OFFSET);
+        return p;
+    }
+
+    protected static <T> T[] concat(T[] first, T[] second) {
         T[] result = Arrays.copyOf(first, first.length + second.length);
         System.arraycopy(second, 0, result, first.length, second.length);
         return result;
     }
 
-    public static List<String> runProcess(boolean isWin, String... command) {
+    protected static List<String> runProcess(boolean isWin, String... command) {
         System.out.print("command to run: ");
         for (String s : command) {
             System.out.print(s);
@@ -70,22 +95,21 @@ public class Utils {
     }
 
 
-    public static Color averageColor(BufferedImage bi, int x0, int y0, int w,
-                                     int h) {
-        int x1 = x0 + w;
-        int y1 = y0 + h;
+    public static Color averageColor(BufferedImage bi, int x, int y) {
         long sumr = 0, sumg = 0, sumb = 0;
-        for (int x = x0; x < x1; x++) {
-            for (int y = y0; y < y1; y++) {
-                Color pixel = new Color(bi.getRGB(x, y));
+        int num = 0;
+        for (int i = -SAMPLE_RANGE; i < 5; i += SAMPLE_RANGE) {
+            for (int j = -SAMPLE_RANGE; j < 5; j += SAMPLE_RANGE) {
+                Color pixel = new Color(bi.getRGB(x+i, y+j));
                 sumr += pixel.getRed();
                 sumg += pixel.getGreen();
                 sumb += pixel.getBlue();
+                num++;
             }
         }
-        int num = w * h;
         return new Color(Math.round(sumr / num), Math.round(sumg / num), Math.round(sumb / num));
     }
+
 
     public static void saveImage(BufferedImage capture) {
         try {

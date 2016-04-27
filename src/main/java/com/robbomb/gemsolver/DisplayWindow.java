@@ -3,6 +3,8 @@ package com.robbomb.gemsolver;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.Random;
 
 import static com.robbomb.gemsolver.GameColor.BOARD_BACKGROUND;
 
@@ -19,6 +21,15 @@ public class DisplayWindow extends JFrame {
     public DisplayWindow(Board board) throws HeadlessException {
         super("Test Window");
 
+        startStopButton = new Button("Move");
+        startStopButton.addActionListener(new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Click!");
+
+                Utils.dragMove(0, 0, 1, 0);
+            }
+        });
+
         initLayouts(board);
 
         // Load Gem labels
@@ -33,7 +44,7 @@ public class DisplayWindow extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         JPanel toolbarPanel = new JPanel(new GridLayout(0, 1));
-        toolbarPanel.add(new Button("adf"));
+        toolbarPanel.add(startStopButton);
         toolbarPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         gridLayout = new GridLayout(board.getWidth(), board.getHeight());

@@ -41,14 +41,18 @@ public class Main {
         // Construct grid
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-                Color avg = Utils.averageColor(capture, TOP_LEFT.x + (x * GEM_X_OFFSET), TOP_LEFT.y + (y * GEM_Y_OFFSET), 5, 5);
+                Color avg = Utils.averageColor(capture, TOP_LEFT.x + (x * GEM_X_OFFSET), TOP_LEFT.y + (y * GEM_Y_OFFSET));
                 Gem gem = board.getGemAt(x,y);
-                gem.determineColor(avg); //TODO: if can't determine a color, break/wait
+                try {
+                    gem.determineColor(avg); //TODO: if can't determine a hue, break/wait
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
         // Solve for best move
-        Solver.solve(board);
+//        Solver.solve(board);
 
         window.updateBoard();
 
