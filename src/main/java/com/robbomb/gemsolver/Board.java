@@ -23,10 +23,6 @@ public class Board {
         }
     }
 
-    public void setGemColorAt(int row, int column, Color c) {
-        board[column][row].setBackground(c);
-    }
-
     public Gem getGemAt(int row, int column) {
         return board[column][row];
     }

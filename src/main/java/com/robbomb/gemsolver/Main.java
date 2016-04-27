@@ -44,9 +44,14 @@ public class Main {
             for (int x = 0; x < 8; x++) {
                 Color avg = Utils.averageColor(capture, TOP_LEFT.x + (x * GEM_X_OFFSET), TOP_LEFT.y + (y * GEM_Y_OFFSET), 5, 5);
 //                board.setGemAt(gem, x, y);
-                board.setGemColorAt(x,y, avg);
+//                board.setGemColorAt(x,y, avg);
+                Gem gem = board.getGemAt(x,y);
+                gem.setColor(avg);
             }
         }
+
+        // Solve for best move
+        Solver.solve(board);
 
         window.updateBoard();
 

@@ -23,4 +23,14 @@ public class Gem extends JLabel {
     public String toString() {
         return getForeground().toString();
     }
+
+    public void setColor(Color avg) {
+        Color c = determineColor(avg);
+        this.setBackground(c);
+    }
+
+    private Color determineColor(Color avg) {
+        //TODO determine
+        return avg;
+    }
 }
