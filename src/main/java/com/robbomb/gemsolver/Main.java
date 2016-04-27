@@ -52,7 +52,7 @@ public class Main {
         }
 
         // Solve for best move
-//        Solver.solve(board);
+        Solver.solve(board);
 
         window.updateBoard();
 

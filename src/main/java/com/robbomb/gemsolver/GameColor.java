@@ -29,6 +29,7 @@ public class GameColor {
 
     public GameColor(String name, Color color, float hue, float sat, float bright) {
         this.name = name;
+        this.color = color;
         this.hue = hue/360;
         this.sat = sat/100;
         this.bright = bright/100;
