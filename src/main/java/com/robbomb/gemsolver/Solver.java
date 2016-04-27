@@ -16,23 +16,34 @@ public class Solver {
                 Gem gem = board.getGemAt(x, y);
                 Point p1 = new Point(x, y);
 
-                // check left
-                if (x > 0) {
 
-                }
-
-                // check right
+                // swap and check horizontal movements
                 if (x < board.getWidth() - 1) {
                     Point p2 = new Point(x + 1, y);
                     Move move = swapAndCheck(board, p1, p2);
-                    if (move != null && move.getRuns() > bestMove.getRuns()) bestMove = move;
+                    if (move != null) {
+                        if (bestMove == null || move.getRuns() > bestMove.getRuns()) bestMove = move;
+                    }
                 }
+
+                // swap and check vertical movements
+                if (y < board.getHeight() - 1) {
+                    Point p2 = new Point(x, y+1);
+                    Move move = swapAndCheck(board, p1, p2);
+                    if (move != null) {
+                        if (bestMove == null || move.getRuns() > bestMove.getRuns()) bestMove = move;
+                    }
+                }
+
+
             }
         }
 
 
-        if (bestMove != null)
+        if (bestMove != null) {
+            System.out.println(bestMove);
             Utils.dragMove(bestMove.getFrom().x, bestMove.getFrom().y, bestMove.getTo().x, bestMove.getTo().y);
+        }
     }
 
     protected static Move swapAndCheck(Board board, Point p1, Point p2) {
