@@ -35,7 +35,6 @@ public class Utils {
 //    "adb shell input swipe 10 500 600 500"
 
     public static void dragMove(int x1, int y1, int x2, int y2) {
-
         Point p1 = getPixelsFromGrid(new Point(x1, y1));
         Point p2 = getPixelsFromGrid(new Point(x2, y2));
 
@@ -55,44 +54,29 @@ public class Utils {
         return p;
     }
 
-    protected static <T> T[] concat(T[] first, T[] second) {
-        T[] result = Arrays.copyOf(first, first.length + second.length);
-        System.arraycopy(second, 0, result, first.length, second.length);
-        return result;
-    }
 
-    protected static List<String> runProcess(boolean isWin, String... command) {
-        System.out.print("command to run: ");
-        for (String s : command) {
-            System.out.print(s);
+protected static void runProcess(boolean isWin, String command) {
+    String compiledCommand = null;
+    try {
+        compiledCommand = "cmd.exe " + "/C " + command;
+        ProcessBuilder pb = new ProcessBuilder(compiledCommand);
+        pb.redirectErrorStream(true);
+        Process p = pb.start();
+        p.waitFor();
+        BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String temp;
+        StringBuilder sb = new StringBuilder();
+        List<String> line = new ArrayList<String>();
+        while ((temp = in.readLine()) != null) {
+            System.out.println("temp line: " + temp);
+            sb.append(temp);
         }
-        System.out.print("\n");
-        String[] allCommand = null;
-        try {
-            if (isWin) {
-                allCommand = concat(WIN_RUNTIME, command);
-            } else {
-                allCommand = concat(OS_LINUX_RUNTIME, command);
-            }
-            ProcessBuilder pb = new ProcessBuilder(allCommand);
-            pb.redirectErrorStream(true);
-            Process p = pb.start();
-            p.waitFor();
-            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String _temp = null;
-            List<String> line = new ArrayList<String>();
-            while ((_temp = in.readLine()) != null) {
-                System.out.println("temp line: " + _temp);
-                line.add(_temp);
-            }
-            System.out.println("result after command: " + line);
-            return line;
+        System.out.println("response: " + line);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+}
 
 
     public static Color averageColor(BufferedImage bi, int x, int y) {

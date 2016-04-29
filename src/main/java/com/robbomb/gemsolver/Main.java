@@ -51,7 +51,7 @@ public class Main {
                     Color avg = Utils.averageColor(capture, TOP_LEFT.x + (x * GEM_X_OFFSET), TOP_LEFT.y + (y * GEM_Y_OFFSET));
                     Gem gem = board.getGemAt(x, y);
                     try {
-                        gem.determineColor(avg); //TODO: if can't determine a hue, break/wait
+                        gem.determineColor(avg);
                     } catch (Exception e) {
                         e.printStackTrace();
                         System.err.println("Position: " + (TOP_LEFT.x + (x * GEM_X_OFFSET)) + ", " + (TOP_LEFT.y + (y * GEM_Y_OFFSET)));

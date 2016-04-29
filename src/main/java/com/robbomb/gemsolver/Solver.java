@@ -13,9 +13,7 @@ public class Solver {
 
         for (int y = 0; y < board.getHeight(); y++) {
             for (int x = 0; x < board.getWidth(); x++) {
-                Gem gem = board.getGemAt(x, y);
                 Point p1 = new Point(x, y);
-
 
                 // swap and check horizontal movements
                 if (x < board.getWidth() - 1) {
@@ -34,14 +32,10 @@ public class Solver {
                         if (bestMove == null || move.getRuns() > bestMove.getRuns()) bestMove = move;
                     }
                 }
-
-
             }
         }
 
-
         if (bestMove != null) {
-            System.out.println(bestMove);
             Utils.dragMove(bestMove.getFrom().x, bestMove.getFrom().y, bestMove.getTo().x, bestMove.getTo().y);
         }
     }
@@ -59,8 +53,6 @@ public class Solver {
         // Check horizontals  - check 0,1,2 - then 1,2,3 ... 5,6,7
         int run = 1;
         GameColor current;
-//        for (int y = 0; y < board.getHeight(); y++) {
-//            for (int x = 0; x < board.getWidth(); x++) {
 
         current = board.getGemAt(p1.x, p1.y).getGameColor();
 
