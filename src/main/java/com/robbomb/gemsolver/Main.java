@@ -61,7 +61,10 @@ public class Main {
             }
 
             // Solve for best move
-            Solver.solve(board);
+            Move move = Solver.solve(board);
+            if (move != null) {
+                Utils.dragMove(move.getFrom().x, move.getFrom().y, move.getTo().x, move.getTo().y);
+            }
 
 
             window.updateBoard();

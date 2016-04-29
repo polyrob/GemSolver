@@ -17,6 +17,7 @@ public class Gem extends JLabel {
         super("Gem");
         this.setOpaque(true);
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
+        this.setGameColor(UNKNOWN);
     }
 
 
