@@ -17,8 +17,8 @@ import static com.robbomb.gemsolver.Constants.*;
  * Created by NewRob on 4/26/2016.
  */
 public class Utils {
-    private static final String[] WIN_RUNTIME = {"cmd.exe", "/C"};
-    private static final String[] OS_LINUX_RUNTIME = {"/bin/bash", "-l", "-c"};
+    private static final String ADB_COMMAND = "cmd.exe";
+    private static final String ADB_ARG1 = "/C";
 
     private static final String adbDragTemplate = "adb shell input swipe x1 y1 x2 y2";
 
@@ -26,10 +26,6 @@ public class Utils {
             "adb shell screencap /sdcard/",
             "adb pull /sdcard/",
             "adb shell rm /sdcard/"};
-
-//    "adb shell screencap /sdcard/screen.png"
-//            "adb pull /sdcard/screen.png"
-//            "adb shell rm /sdcard/screen.png"
 
 //    "adb shell input tap x y"
 //    "adb shell input swipe 10 500 600 500"
@@ -44,7 +40,7 @@ public class Utils {
                 .replace("x2", String.valueOf(p2.x))
                 .replace("y2", String.valueOf(p2.y));
 
-        runProcess(true, command);
+        runProcess(command);
     }
 
     protected static Point getPixelsFromGrid(Point grid) {
@@ -55,11 +51,9 @@ public class Utils {
     }
 
 
-protected static void runProcess(boolean isWin, String command) {
-    String compiledCommand = null;
+protected static void runProcess(String command) {
     try {
-        compiledCommand = "cmd.exe " + "/C " + command;
-        ProcessBuilder pb = new ProcessBuilder(compiledCommand);
+        ProcessBuilder pb = new ProcessBuilder(ADB_COMMAND, ADB_ARG1, command);
         pb.redirectErrorStream(true);
         Process p = pb.start();
         p.waitFor();
