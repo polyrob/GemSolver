@@ -20,7 +20,7 @@ public class DisplayWindow extends JFrame {
 
     public DisplayWindow(Board board) throws HeadlessException {
         super("Test Window");
-
+        this.setLocation(600, 100);
         startStopButton = new Button("Move");
         startStopButton.addActionListener(new AbstractAction() {
             public void actionPerformed(ActionEvent e) {

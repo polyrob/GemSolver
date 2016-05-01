@@ -22,7 +22,7 @@ public class Constants {
     public static final int GEM_X_OFFSET = 67;
     public static final int GEM_Y_OFFSET = 67;
 
-    public static final double COLOR_DELTA = 0.04;
+    public static final double COLOR_DELTA = 0.035;
     public static final int SAMPLE_RANGE = 15;
 
 

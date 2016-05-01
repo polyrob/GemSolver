@@ -11,6 +11,10 @@ public class Move {
     Point to;
     int runs;
 
+    public Move(int runs) {
+        this.runs = runs;
+    }
+
     public Move(Point from, Point to, int value) {
         this.from = from;
         this.to = to;
