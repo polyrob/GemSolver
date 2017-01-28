@@ -10,9 +10,12 @@ import static com.robbomb.gemsolver.Constants.*;
  */
 public class ScreenGrabber implements Grabber {
 
-    private static final Rectangle screenRect = new Rectangle(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
-
+    private Rectangle screenRect;
     private Robot robot;
+
+    public ScreenGrabber(Rectangle rect) {
+        screenRect = rect;
+    }
 
     public BufferedImage getFrame() throws GrabberException {
         if (robot == null) try {

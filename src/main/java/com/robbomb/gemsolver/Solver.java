@@ -36,27 +36,37 @@ public class Solver {
             }
         }
 
+        if (bestMove != null) {
+            System.out.println("Best move: " + bestMove);
+            System.out.println("Colors: " + board.getGemAt(bestMove.getFrom().x, bestMove.getFrom().y) + ", " +
+                    board.getGemAt(bestMove.getTo().x, bestMove.getTo().y));
+        } else {
+            System.out.println("Could not determine best move.");
+            System.out.println(board.toString());
+        }
         return bestMove;
     }
 
     protected static Move swapAndCheck(Board board, Point p1, Point p2) {
-        Gem gem1 = board.getGemAt(p1.x, p1.y);
-        Gem gem2 = board.getGemAt(p2.x, p2.y);
+        GameColor gem1 = board.getGemAt(p1.x, p1.y);
+        GameColor gem2 = board.getGemAt(p2.x, p2.y);
 
         // If we don't know one, we can't solve
-        if (gem1.getGameColor() == GameColor.UNKNOWN || gem2.getGameColor() == GameColor.UNKNOWN) return null;
+        if (gem1 == GameColor.UNKNOWN || gem2 == GameColor.UNKNOWN) return null;
 
         // Swap
-        GameColor temp = board.getGemAt(p1.x, p1.y).getGameColor();
-        gem1.setGameColor(board.getGemAt(p2.x, p2.y).getGameColor());
-        gem2.setGameColor(temp);
+        GameColor temp = gem2;
 
-        Move m1 = checkMovesForGem(board, board.getGemAt(p1.x, p1.y).getGameColor(), p1);
-        Move m2 = checkMovesForGem(board, board.getGemAt(p2.x, p2.y).getGameColor(), p2);
+        board.setGemAt(gem1, p2.x, p2.y);
+        board.setGemAt(gem2, p1.x, p1.y);
+
+
+        Move m1 = checkMovesForGem(board, board.getGemAt(p1.x, p1.y), p1);
+        Move m2 = checkMovesForGem(board, board.getGemAt(p2.x, p2.y), p2);
 
         // Revert
-        gem2.setGameColor(gem1.getGameColor());
-        gem1.setGameColor(temp);
+        board.setGemAt(gem2, p2.x, p2.y);
+        board.setGemAt(gem1, p1.x, p1.y);
 
         // set Move pieces
         if (m1 != null) {
@@ -84,28 +94,28 @@ public class Solver {
         int run = 1;
         Move bestMove = null;
         // check left
-        while (p.x - run >= 0 && current == board.getGemAt(p.x - run, p.y).getGameColor()) {
+        while (p.x - run >= 0 && current == board.getGemAt(p.x - run, p.y)) {
             run++;
         }
         if (run > 2) bestMove = new Move(run);
 
         // check right
         run = 1;
-        while (p.x + run < board.getHeight() && current == board.getGemAt(p.x + run, p.y).getGameColor()) {
+        while (p.x + run < board.getHeight() && current == board.getGemAt(p.x + run, p.y)) {
             run++;
         }
         if (run > 2) if (bestMove == null || run > bestMove.getRuns()) bestMove = new Move(run);
 
         // check up
         run = 1;
-        while (p.y - run >= 0 && current == board.getGemAt(p.x, p.y - run).getGameColor()) {
+        while (p.y - run >= 0 && current == board.getGemAt(p.x, p.y - run)) {
             run++;
         }
         if (run > 2) if (bestMove == null || run > bestMove.getRuns()) bestMove = new Move(run);
 
         //check down
         run = 1;
-        while (p.y + run < board.getHeight() && current == board.getGemAt(p.x, p.y + run).getGameColor()) {
+        while (p.y + run < board.getHeight() && current == board.getGemAt(p.x, p.y + run)) {
             run++;
         }
         if (run > 2) if (bestMove == null || run > bestMove.getRuns()) bestMove = new Move(run);

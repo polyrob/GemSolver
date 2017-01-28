@@ -7,28 +7,14 @@ import java.awt.*;
  */
 public class Constants {
 
-    public static final int OFFSET_X = 0;
-    public static final int OFFSET_Y = 30;
-    public static final int WIDTH = 520;
-    public static final int HEIGHT = 945;
 
-    public static final Point BITMAP_TOP_LEFT = new Point(68, 319);
-
-    public static final int DEVICE_GEM_X_OFFSET = 136;
-    public static final int DEVICE_GEM_Y_OFFSET = 136;
-
-    public static final Point TOP_LEFT = new Point(34, 158);
-
-    public static final int GEM_X_OFFSET = 67;
-    public static final int GEM_Y_OFFSET = 67;
-
-    public static final double COLOR_DELTA = 0.035;
-    public static final int SAMPLE_RANGE = 15;
+    public static final double COLOR_DELTA = 0.05;
+    public static final int SAMPLE_RANGE = 2;
 
 
+    public static final float GEM_X_OFFSET = 0.077778f;
+    public static final float GEM_Y_TOP_OFFSET = 0.21652f;
+    public static final float GEM_Y_BOTTOM_OFFSET = 0.642857f;
 
 
 }
-
-
-//1015 1261

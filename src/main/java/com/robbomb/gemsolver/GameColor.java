@@ -14,10 +14,10 @@ public class GameColor {
     public static final GameColor COLOR_GREEN =  new GameColor("GREEN", Color.GREEN, 131, 84, 79);
     public static final GameColor COLOR_ORANGE =  new GameColor("ORANGE", Color.ORANGE, 28, 79, 95);
     public static final GameColor COLOR_RED = new GameColor("RED", Color.RED, 351, 92, 98);
-    public static final GameColor COLOR_BLUE = new GameColor("BLUE", Color.BLUE, 213, 94, 89);
+    public static final GameColor COLOR_BLUE = new GameColor("BLUE", Color.BLUE, 209, 92, 100);
     public static final GameColor COLOR_YELLOW = new GameColor("YELLOW", Color.YELLOW, 56, 87, 99);
     public static final GameColor COLOR_WHITE = new GameColor("WHITE", Color.WHITE, 240, 0, 93);
-    public static final GameColor COLOR_MAGENTA = new GameColor("MAGENTA", Color.MAGENTA, 300, 92, 93);
+    public static final GameColor COLOR_MAGENTA = new GameColor("MAGENTA", Color.MAGENTA, 300, 97, 96);
 
     public static final GameColor[] GAME_COLORS = {COLOR_BLUE, COLOR_GREEN, COLOR_MAGENTA, COLOR_ORANGE, COLOR_RED, COLOR_WHITE, COLOR_YELLOW};
 
@@ -35,6 +35,35 @@ public class GameColor {
         this.hue = hue/360;
         this.sat = sat/100;
         this.bright = bright/100;
+    }
+
+    public static GameColor determineColor(Color avg) throws Exception {
+        float[] hsv = new float[3];
+        Color.RGBtoHSB(avg.getRed(), avg.getGreen(), avg.getBlue(), hsv);
+        if (hsv[1] < 0.2f) {
+            // it's white - can't use hue for white - using saturation
+            return COLOR_WHITE;
+        } else if (hsv[0] < 0.042 || hsv[0] > 0.917) {
+            return COLOR_RED;
+        } else {
+            for (GameColor gameColor : HUE_COMPARE_COLORS) {
+                if (similarTo(hsv, gameColor)) {
+                    return gameColor;
+                }
+            }
+        }
+        throw new Exception("Could not locate GameColor, " + avg);
+    }
+
+    protected static boolean similarTo(float[] inputHsv, GameColor gameColor) {
+
+        double distance = Math.abs(inputHsv[0] - gameColor.getHue());
+
+        if (distance < Constants.COLOR_DELTA) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public String getName() {
@@ -59,8 +88,6 @@ public class GameColor {
 
     @Override
     public String toString() {
-        return "GameColor{" +
-                "name='" + name + '\'' +
-                '}';
+        return name;
     }
 }

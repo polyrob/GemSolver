@@ -2,75 +2,17 @@ package com.robbomb.gemsolver;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import static com.robbomb.gemsolver.Constants.*;
+import static com.robbomb.gemsolver.Constants.SAMPLE_RANGE;
 
 /**
  * Created by NewRob on 4/26/2016.
  */
 public class Utils {
-    private static final String ADB_COMMAND = "cmd.exe";
-    private static final String ADB_ARG1 = "/C";
-
-    private static final String adbDragTemplate = "adb shell input swipe x1 y1 x2 y2";
-
-    static String[] commands = {
-            "adb shell screencap /sdcard/",
-            "adb pull /sdcard/",
-            "adb shell rm /sdcard/"};
-
-//    "adb shell input tap x y"
-//    "adb shell input swipe 10 500 600 500"
-
-    public static void dragMove(int x1, int y1, int x2, int y2) {
-        Point p1 = getPixelsFromGrid(new Point(x1, y1));
-        Point p2 = getPixelsFromGrid(new Point(x2, y2));
-
-        String command = adbDragTemplate
-                .replace("x1", String.valueOf(p1.x))
-                .replace("y1", String.valueOf(p1.y))
-                .replace("x2", String.valueOf(p2.x))
-                .replace("y2", String.valueOf(p2.y));
-
-        runProcess(command);
-    }
-
-    protected static Point getPixelsFromGrid(Point grid) {
-        Point p = new Point();
-        p.x = BITMAP_TOP_LEFT.x + (grid.x * DEVICE_GEM_X_OFFSET);
-        p.y = BITMAP_TOP_LEFT.y + (grid.y * DEVICE_GEM_Y_OFFSET);
-        return p;
-    }
-
-
-protected static void runProcess(String command) {
-    try {
-        ProcessBuilder pb = new ProcessBuilder(ADB_COMMAND, ADB_ARG1, command);
-        pb.redirectErrorStream(true);
-        Process p = pb.start();
-        p.waitFor();
-        BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String temp;
-        StringBuilder sb = new StringBuilder();
-        List<String> line = new ArrayList<String>();
-        while ((temp = in.readLine()) != null) {
-            System.out.println("temp line: " + temp);
-            sb.append(temp);
-        }
-        System.out.println("response: " + line);
-
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-}
 
 
     public static Color averageColor(BufferedImage bi, int x, int y) {
@@ -81,7 +23,7 @@ protected static void runProcess(String command) {
                 for (int j = -SAMPLE_RANGE; j < 5; j += SAMPLE_RANGE) {
                     Color pixel = null;
                     try {
-                        pixel = new Color(bi.getRGB(x + i, y + j));
+                        pixel = new Color(bi.getRGB(x + i*2, y + j*2));
                     }catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -100,6 +42,28 @@ protected static void runProcess(String command) {
         try {
             ImageIO.write(capture, "bmp", new File(filename));
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void dragMove(Rectangle vysorRect, Board gameboard, Move move) {
+        try {
+            Robot robot = new Robot();
+
+            // drag
+            int x = (int) (vysorRect.x + gameboard.getStartX() + (move.getFrom().x * gameboard.getDeltaX()));
+            int y = (int) (vysorRect.y + gameboard.getStartY() + (move.getFrom().y * gameboard.getDeltaY()));
+            robot.mouseMove(x, y);
+            robot.mousePress(InputEvent.BUTTON1_MASK);
+            robot.mouseRelease(InputEvent.BUTTON1_MASK);
+            // drop
+            x = (int) (vysorRect.x + gameboard.getStartX() + (move.getTo().x * gameboard.getDeltaX()));
+            y = (int) (vysorRect.y + gameboard.getStartY() + (move.getTo().y * gameboard.getDeltaY()));
+            robot.mouseMove(x, y);
+            robot.mousePress(InputEvent.BUTTON1_MASK);
+            robot.mouseRelease(InputEvent.BUTTON1_MASK);
+        } catch (AWTException e) {
             e.printStackTrace();
         }
     }
